@@ -1,7 +1,3 @@
-#include <functional>
-#include <iostream>
-#include <vector>
-
 class Solution {
 public:
   std::vector<std::vector<int>> fourSum(std::vector<int> &nums, long target) {
@@ -51,17 +47,3 @@ public:
     return res;
   }
 };
-
-int main() {
-  Solution s;
-  std::vector<int> v = {1, 0, -1, 0, -2, 2};
-  int target = 0;
-  std::vector<std::vector<int>> res = s.fourSum(v, target);
-  for (const auto &triplet : res) {
-    for (std::size_t i = 0; i < triplet.size(); i++) {
-      std::cout << triplet[i] << "\t";
-    }
-    std::cout << std::endl;
-  }
-  return 0;
-}
