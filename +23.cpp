@@ -1,0 +1,66 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.empty()) {
+            return nullptr;
+        }
+        while (lists.size() > 1) {
+            vector<ListNode*> temp;
+            for (size_t i = 0; i < lists.size(); i += 2) {
+                ListNode* l1 = lists[i];
+                ListNode* l2 = i + 1 < lists.size() ? lists[i + 1] : nullptr;
+                temp.push_back(mergeTwoLists(l1, l2));
+            }
+            lists = move(temp);
+        }
+        return lists[0]; 
+    }
+private:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        if (!list1 && !list2) {
+            return nullptr;
+        }
+        else if (!list1) {
+            return list2;
+        }
+        else if (!list2) {
+            return list1;
+        }
+        std::unique_ptr<ListNode> head = std::make_unique<ListNode>();
+        ListNode* res = head.get();
+        while (list1 && list2) {
+            if (list1->val < list2->val) {
+                res->next = list1;
+                res = res->next;
+                list1 = list1->next;
+            }
+            else {
+                res->next = list2;
+                res = res->next;
+                list2 = list2->next;
+            }
+        }
+        while (list1) {
+            res->next = list1;
+            res = res->next;
+            list1 = list1->next;
+        }
+        while (list2) {
+            res->next = list2;
+            res = res->next;
+            list2 = list2->next;
+        }
+        res = head->next;
+        return res;
+    }
+};
